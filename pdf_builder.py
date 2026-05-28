@@ -96,14 +96,17 @@ def build_pdf(
     # Apply thickness before fitting if configured
     line_w = cfg.line_thickness_pt
 
-    # Apply fitting transform
+    # Apply fitting transform. With unlimited canvas, strokes are stored
+    # in world coords that extend past the screen; only the bbox-based
+    # scale_to_format mapping makes sense.
+    fit_mode = "scale_to_format" if cfg.unlimited_canvas else cfg.fitting_mode
     transformed = transform_strokes(
         strokes,
         canvas_w=canvas_w,
         canvas_h=canvas_h,
         pdf_w_pt=pdf_w_pt,
         pdf_h_pt=pdf_h_pt,
-        mode=cfg.fitting_mode,
+        mode=fit_mode,
         device_w_cm=cfg.device_width_cm,
         device_h_cm=cfg.device_height_cm,
     )

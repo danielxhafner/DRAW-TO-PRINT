@@ -329,6 +329,11 @@ class ConfigDialog(QDialog):
         dev_layout.addRow("Device height:", self._dev_h)
         layout.addWidget(dev_group)
 
+        self._unlimited_canvas = QCheckBox(
+            "Unlimited canvas  (mouse drives an infinite drawing surface)"
+        )
+        layout.addWidget(self._unlimited_canvas)
+
         self._fitting_preview = _FittingPreview()
         layout.addWidget(QLabel("Preview:"))
         layout.addWidget(self._fitting_preview)
@@ -517,6 +522,7 @@ class ConfigDialog(QDialog):
             self._fit_prop.setChecked(True)
         self._dev_w.setValue(cfg.device_width_cm)
         self._dev_h.setValue(cfg.device_height_cm)
+        self._unlimited_canvas.setChecked(cfg.unlimited_canvas)
         self._update_fitting_preview()
 
         # Line config
@@ -561,6 +567,7 @@ class ConfigDialog(QDialog):
         cfg.fitting_mode = "proportional" if self._fit_prop.isChecked() else "scale_to_format"
         cfg.device_width_cm = self._dev_w.value()
         cfg.device_height_cm = self._dev_h.value()
+        cfg.unlimited_canvas = self._unlimited_canvas.isChecked()
 
         # Line config
         cfg.line_thickness_pt = self._line_thickness.value()

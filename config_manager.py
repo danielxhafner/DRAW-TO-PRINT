@@ -41,6 +41,7 @@ class Config:
     fitting_mode: str = "proportional"   # "proportional" | "scale_to_format"
     device_width_cm: float = 13.0        # physical input device width
     device_height_cm: float = 8.0        # physical input device height
+    unlimited_canvas: bool = False       # warp-and-track infinite canvas mode
 
     # Line Configuration
     line_thickness_pt: float = 1.0
