@@ -216,7 +216,7 @@ class ConfigDialog(QDialog):
         self._tabs.addTab(self._tab_mouse(), "Input")
         self._tabs.addTab(self._tab_fitting(), "Scaling")
         self._tabs.addTab(self._tab_line_and_vector(), "Vector")
-        self._tabs.addTab(self._tab_num_lines(), "Number of Lines")
+        self._tabs.addTab(self._tab_num_lines(), "Number of Strokes")
         self._tabs.addTab(self._tab_archive(), "Archive Folder")
 
         buttons = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
@@ -454,7 +454,10 @@ class ConfigDialog(QDialog):
         self._num_lines = QSpinBox()
         self._num_lines.setRange(1, 100)
         self._num_lines.setMaximumWidth(80)
-        layout.addRow("Default strokes before printing:", self._num_lines)
+        layout.addRow(
+            "Default strokes before printing (works on a limited canvas only):",
+            self._num_lines,
+        )
 
         note = QLabel(
             "Tip: right-click on the canvas to change this value on the fly.\n"

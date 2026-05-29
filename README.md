@@ -2,7 +2,7 @@
 
 A fullscreen drawing utility that converts hand-drawn strokes into vector PDF output and sends the result to a printer or archive.
 
-## Getting Started
+## Setup
 
 ### Requirements
 - Python 3.x
@@ -12,7 +12,7 @@ A fullscreen drawing utility that converts hand-drawn strokes into vector PDF ou
 
 ### Install dependencies
 
-Use your virtual environment or global Python environment:
+Create or activate your Python environment, then install dependencies:
 
 ```sh
 python -m pip install PyQt5 reportlab
@@ -34,34 +34,71 @@ From the project root:
 
 This launches the application using the Python interpreter from `.venv` and runs `draw_to_printer.py`.
 
-## Program Overview
+## Overview
 
-`draw_to_printer` is designed to capture strokes, convert them into a printable PDF, and optionally print immediately.
+`draw_to_printer` captures freehand strokes, converts them into a vector PDF, and either prints the PDF or saves it to an archive.
 
-### Main functionality
+### Key features
 
-- Fullscreen drawing canvas using PyQt5
-- Automatic print cycle after a configurable number of strokes
-- Vector PDF generation with smoothing and fitting
-- Printing via CUPS (`lp`) or saving PDF only
-- Archive copy of every generated PDF with timestamped filenames
-- Persistent settings stored in `~/.draw_to_printer/config.json`
+- Fullscreen drawing canvas built with PyQt5
+- Configurable print cycle triggered by stroke count
+- Vector PDF generation with smoothing and fitting logic
+- PDF printing with CUPS via `lp`
+- `save_pdf_only` mode to skip printing and only save the PDF
+- Automatic archive copy of every generated PDF using timestamped filenames
+- Persistent configuration in `~/.draw_to_printer/config.json`
 
-### What happens when you draw
+## New setup titles and functions
 
-1. Draw strokes with the left mouse button.
-2. Each completed stroke is stored.
-3. After the configured number of strokes is reached, the app:
-   - builds a PDF from the strokes,
-   - sends the PDF to the selected printer (unless `save_pdf_only` is enabled),
-   - archives a copy in the configured archive folder,
-   - clears the current drawing session.
+### Setup titles
+- `Setup`
+- `Install dependencies`
+- `Run the program`
+- `Overview`
+- `Key features`
+- `Controls`
+- `Settings`
+- `File locations`
+- `Notes`
+
+### Main functions and modules
+
+- `draw_to_printer.py`
+  - `MainWindow` - main application window and print workflow
+  - `_on_print_done()` - updates status text after PDF generation
+  - `_on_print_error()` - shows errors from the print/archival pipeline
+
+- `config_manager.py`
+  - `Config` dataclass - holds all runtime settings
+  - `load_config()` - loads settings from `~/.draw_to_printer/config.json`
+  - `save_config()` - writes settings back to disk
+
+- `pdf_builder.py`
+  - `build_pdf()` - converts strokes into a PDF file
+  - PDF smoothing helpers: `_rdp_simplify()`, `_chaikin()`, `_smoothness_to_iterations()`
+
+- `printer_manager.py`
+  - `list_printers()` - finds available printers via `lpstat`
+  - `get_default_printer()` - returns the system default printer
+  - `print_file()` - sends a PDF to a printer via `lp`
+
+- `archive_manager.py`
+  - `save_to_archive()` - copies PDFs to the configured archive folder with a timestamped filename
+
+## How it works
+
+1. Draw with the left mouse button.
+2. Strokes are collected until the configured threshold is reached.
+3. The app builds a PDF from the strokes.
+4. If `save_pdf_only` is disabled, the PDF is sent to the selected printer.
+5. The PDF is archived to the configured archive folder.
+6. The UI status shows `Saved` or `Saved & printed` depending on the current mode.
 
 ## Controls
 
 - Left mouse button: draw strokes
 - Right mouse button: increment the line/print target count
-- Right double-click: reset target count to 1
+- Right double-click: reset the target count to 1
 - `S` key: open the settings dialog
 - `Escape` or `Ctrl+Q`: quit the application
 
@@ -74,9 +111,9 @@ Open the configuration window with `S` to adjust:
 - fitting mode (`proportional` or `scale_to_format`)
 - input device dimensions and unlimited canvas mode
 - line thickness, color, and smoothing
-- number of strokes required for a print cycle
+- number of strokes required for a print cycle (Works on a limited canvas only)
 - archive folder and printer selection
-- `save_pdf_only` to skip actual printing
+- `save_pdf_only` to skip printing and only save PDFs
 
 ## File locations
 
@@ -87,6 +124,6 @@ Open the configuration window with `S` to adjust:
 
 ## Notes
 
-- If no printer is configured, the system default is used.
-- The app relies on CUPS commands, so ensure `lp` and `lpstat` are installed and available in your PATH.
-- The archive folder is created automatically on first run.
+- If no printer is configured, the system default printer is used.
+- The app depends on CUPS commands, so ensure `lp` and `lpstat` are available on your PATH.
+- The archive folder is created automatically when needed.

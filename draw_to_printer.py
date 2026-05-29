@@ -68,6 +68,9 @@ class MainWindow(QMainWindow):
         sc = QShortcut(QKeySequence("S"), self)
         sc.activated.connect(self._open_config)
 
+        pref_shortcut = QShortcut(QKeySequence(QKeySequence.Preferences), self)
+        pref_shortcut.activated.connect(self._open_config)
+
     def _open_config(self):
         dlg = ConfigDialog(self.cfg, parent=self)
         if dlg.exec_() == ConfigDialog.Accepted:
