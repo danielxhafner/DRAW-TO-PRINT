@@ -125,3 +125,5 @@ Open the configuration window with `S` or `command+,` to adjust:
 - If no printer is configured, the system default printer is used.
 - The app depends on CUPS commands, so ensure `lp` and `lpstat` are available on your PATH.
 - The archive folder is created automatically when needed.
+
+![bildbeschreibung](./assets/screen1.png)
