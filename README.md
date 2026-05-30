@@ -132,3 +132,4 @@ Open the configuration window with `S` or `command+,` to adjust:
 - The app depends on CUPS commands, so ensure `lp` and `lpstat` are available on your PATH.
 - The archive folder is created automatically when needed.
 
+![bildbeschreibung](./assets/video.mov)
